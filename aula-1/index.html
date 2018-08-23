@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Page Title</title>
+    <script src="https://unpkg.com/vue"></script>
+</head>
+
+<body>
+
+    <div style="margin-left:30px" id="app" v>
+        <h1> {{ titulo }}</h1>
+
+        <p v-if="status" style="color:red">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Excepturi pariatur ex
+            quo facilis eum ipsa nesciunt deleniti illo harum dignissimos, praesentium quasi velit possimus odio ab voluptatem
+            quidem a. Commodi.</p>
+        <p v-else>nao existe testo</p>
+        <p v-show="!status" style="color:blue">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Excepturi pariatur
+            ex quo facilis eum ipsa nesciunt deleniti illo harum dignissimos, praesentium quasi velit possimus odio ab voluptatem
+            quidem a. Commodi.</p>
+        <hr>
+        <ul>
+            <li v-for="(item,index) in linguagens">{{index}} - {{item.nome}}</li>
+        </ul>
+        <hr>
+        <label>nome</label>
+        <input type="text" v-model="nome">{{nome}}
+
+        <br><br>
+        <label>telefone</label>
+        <input type="text" v-model="telefone">
+
+        <br><br>
+        <label>deseja receber notificação?</label>
+        <input type="radio" value="true" v-model="novidades">sim
+        <input type="radio" value="false" v-model="novidades">não
+
+        <br><br>
+        <label>intereces?</label>
+        <input type="checkbox" value="futebou" v-model="interesses">futebol <br>
+        <input type="checkbox" value="formula1" v-model="interesses">formula 1 <br>
+        <input type="checkbox" value="corrida" v-model="interesses"> Corrida <br>
+
+        <br><br>
+        <label>como nos conheceu?</label>
+        <select v-model="conheceu">
+            <option value="">escolha</option>
+            <option value="google">google</option>
+            <option value="tv">tv</option>
+            <option value="revista">revista</option>
+        </select>
+
+        <br><br>
+
+        <button>enviar</button> <br>
+
+        {{nome}} 
+        <br> 
+        {{telefone}}
+        <br> 
+        {{novidades}}
+        <br> 
+        {{interesses}}
+        <br> 
+        {{conheceu}}
+        <br>
+
+        <hr>
+
+    </div>
+    <script>
+        var app = new Vue({
+            el: "#app",
+            data: {
+                titulo: "aula Vuejs",
+                status: false,
+                nome: "",
+                telefone: "",
+                novidades: true,
+                interesses: [],
+                conheceu: "",
+                linguagens: [
+                    { nome: "javascript" },
+                    { nome: "c#" },
+                    { nome: "java" },
+                    { nome: "php" },
+                    { nome: "python" },
+                ]
+            }
+        });
+    </script>
+</body>
+
+</html>
