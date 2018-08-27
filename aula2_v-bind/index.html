@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Page Title</title>
+    <script src="https://unpkg.com/vue"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+
+<body>
+
+    <div style="margin-left:30px" id="app">
+        <!-- "v-bind" atribui um valor a algum atributo do html -->
+        <input v-model="tamanho" type="range" min="50" max="400"> <br>
+        <img v-bind:src="imagem" v-bind:height="tamanho" />
+        <hr>
+        <input type="checkbox" v-model="btnClassLimpar.btn-danger"/> btn-danger
+        <!-- <input type="checkbox" v-model="btnClassLimpar.btn-sm"/> pequeno -->
+
+        <button v-bind:class="btnClassLimpar">Linpar</button>
+        <button v-bind:class="btnClassEnviar">Enviar</button>
+    </div>
+    <script>
+        var app = new Vue({
+            el: "#app",
+            data: {
+                imagem: "https://www.youtube.com/yts/img/yt_1200-vfl4C3T0K.png",
+                tamanho: 100,
+                btnClassLimpar:{
+                    'btn-danger':true,
+                    'btn-sm':true,
+                    'btn':true
+                    },
+                btnClassEnviar:'btn-primary btn-lg',
+            }
+        });
+    </script>
+</body>
+
+</html>
