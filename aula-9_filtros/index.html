@@ -15,7 +15,7 @@
 
         <H1>{{titulo}}</H1>
         <ul>
-            <li v-for="usu in Usuarios">{{usu.nome | ToUpper('a','b')}}</li>
+            <li v-for="usu in Usuarios">{{usu.nome |ToUpper('a','b') | tuncate('5')}}</li>
         </ul>
         <form action="https://www.google.com" method="POST">
             <!-- "v-on:click.prevent.stop"chama o metodo sem para qualquer outor evento que for desparado no caso o post do formulario -->
@@ -30,7 +30,7 @@
         var app = new Vue({
             el: "#app",
             data: {
-                titulo: "titulo",
+                titulo: "titulo da minha pagina",
                 Usuarios: [
                     { nome: "ricardo" },
                     { nome: "rafaela" },
@@ -43,10 +43,18 @@
                     alert("Enviado");
                 },
             },
-            filters: {
+            filters: {//campo para montar filtros
                 ToUpper(str, parametro1, parametro2) {
-                    alert(`parametro1  parametro2`)
+                    alert(parametro1 + parametro2)
                     return str.toUpperCase();
+                },
+                tuncate(str, tamanho) {
+                    if (str.length >= tamanho){
+                        return str.substring(0, tamanho) + '...';
+                    }
+                    else{
+                        return str;
+                    }
                 }
             }
         });
