@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Page Title</title>
+    <script src="https://unpkg.com/vue"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
+</head>
+
+<body>
+
+    <div style="margin-left:30px; margin-top: 30px" id="app">
+        <form action="https://www.google.com" method="POST">
+            <!-- "v-on:click.prevent.stop"chama o metodo sem para qualquer outor evento que for desparado no caso o post do formulario -->
+            <button type="submit" class="btn btn-primary" v-on:click.prevent.stop="enviar()">Enviar</button>
+            <!-- o @ substitui o v-on -->
+            <button type="submit" class="btn btn-primary" @:click.prevent.stop="enviar()">Enviar</button>
+        </form>
+        <hr>
+
+        <button class="btn btn-danger" v-on:click="remover(quantidade)">remover</button>
+        <button class="btn btn-primary" v-on:click="adicionar(quantidade)">adicionar</button>
+
+        <p>
+            <h1>{{quantidade}}</h1>
+        </p>
+    </div>
+    <script>
+        var app = new Vue({
+            el: "#app",
+            data: {
+                quantidade: 1,
+            },
+            methods: {
+                enviar() {
+                    alert("Enviado");
+                },
+
+                adicionar(quantidade) { quantidade++ },
+                remover(quantidade) { quantidade-- },
+            }
+        });
+    </script>
+</body>
+
+</html>
