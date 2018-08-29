@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Page Title</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
+</head>
+
+<body>
+
+    <div style="margin-left:30px; margin-top: 30px" id="app">
+        {{nome}} {{toUpper}} {{teste}}
+
+
+        <hr>
+
+        <label>primeiro nome</label>
+        <input type="text" v-model="fistName" />
+
+        <br>
+
+        <label>sobre nome</label>
+        <input type="text" v-model="lastName" />
+        <br> {{fistName}}
+        <br> {{lastName}}
+        
+        <br> computed {{fullName}}
+        <br> watch {{nomeCompleto}}
+
+
+
+    </div>
+    <script src="https://unpkg.com/vue"></script>
+    <script>
+        var app = new Vue({
+            el: "#app",
+            data: {
+                titulo: "titulo da minha pagina",
+                nome: "ricardo",
+                sobreNome: "riberio",
+                teste: 'nada',
+                fistName: '',
+                lastName: '',
+                fullName: '',
+
+            },
+            computed: { //observa todas as mudanças das variaveis que fica dentro dela
+                toUpper() {
+                    console.log("mudada pela computer");
+                    console.log(this.sobreNome);
+                    return this.nome.toUpperCase();
+                },
+                nomeCompleto(){
+                    return this.fistName + ' ' + this.lastName
+                }
+            },
+            watch: {// fica obserbando quando uma valor de variavel muda
+                nome(novoValor, valorAntigo) {
+                    console.log(novoValor);
+                    console.log(valorAntigo);
+                },
+                fistName(novoValor, valorAntigo) {
+                    this.enviar();
+                    this.fullName = novoValor + '' + this.lastName
+                },
+                lastName(novoValor, valorAntigo) {
+                    this.fullName = this.fistName + ' ' + novoValor
+                }
+            },
+            methods: {
+                enviar() {
+                    console.log("nome usuari auterado");
+                },
+            },
+        });
+    </script>
+</body>
+
+</html>
