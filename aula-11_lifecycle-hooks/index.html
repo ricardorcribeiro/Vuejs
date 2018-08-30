@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Page Title</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
+</head>
+
+<body>
+
+    <div style="margin-left:30px; margin-top: 30px" id="app">
+{{titulo}}
+        <img src="lifecycle.png" style="height: 700px;" />
+
+    </div>
+    <script src="https://unpkg.com/vue"></script>
+    <script>
+        var app = new Vue({
+            el: "#app",
+            beforeCreate() {//uma funcao que e chamada assim que o vue e chamado
+                console.log("beforeCreate");
+                console.log('titulo',this.titulo);//montrando que aqui eu nao tenho acesso as variaveis do data
+                console.log('el ',this.$el);//montrondo que nao tenho acesso ao seletos ou elemento 'el'
+            },
+            created() {//aqui eu ja tenho acesso as variaveis
+                console.log("created");
+                console.log('titulo',this.titulo);//montrando que aqui eu tenho acesso as variaveis do data
+                console.log('el ',this.$el);
+
+            },
+            beforeMount() {//e gerado depois do processo dos templates | ainda nao intendi direito
+                console.log("beforeMount");
+                console.log('el ',this.$el);//montrondo que já tenho acesso ao seletos ou elemento 'el'
+            },
+            mounted() {//apois gerar o template
+                console.log("mounted");
+                console.log('el ',this.$el);
+            },
+            beforeUpdate() {//ativado toda vez que o DOM for ser auterado
+                console.log("beforeUpdate");
+            },
+            updated() {//ativado quando o DOM ja tiver sito auterado
+                console.log("updated");
+            },
+            data: {
+                titulo: "titulo da minha pagina",
+            }
+        });
+    </script>
+</body>
+
+</html>
