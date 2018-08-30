@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Page Title</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
+</head>
+
+<body>
+
+    <div style="margin-left:30px; margin-top: 30px" id="app">
+        {{titulo}}
+
+        
+        <template id="menu">
+            <ul>
+                <li>item 1</li>
+                <li>item 2</li>
+                <li>item 3</li>
+            </ul>
+        </template>
+
+        <menu-bar2></menu-bar2>
+
+    </div>
+    <script src="https://unpkg.com/vue"></script>
+    <script>
+        //primeiro parametro nome do componente
+        Vue.component('menu-bar', {
+            template: "#menu",//"template" html do componente
+        })
+        Vue.component('menu-bar2', {
+            template:  `<ul>
+                <li>item 1</li>
+                <li>item 2</li>
+                <li>item 3</li>
+            </ul>`,//"template" html do componente
+        })
+        var app = new Vue({
+            el: "#app",
+            data: {
+                titulo: "titulo da minha pagina",
+            }
+        });
+    </script>
+</body>
+
+</html>
