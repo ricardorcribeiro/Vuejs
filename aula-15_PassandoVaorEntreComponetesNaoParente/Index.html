@@ -10,22 +10,75 @@
 </head>
 
 <body>
-
-    <div style="margin-left:30px; margin-top: 30px" id="app">
-
-        <ul class="list-group">
-            <li class="list-group-item">item 1</li>
-            <li class="list-group-item">item 2</li>
-            <li class="list-group-item">item 3</li>
-            <li class="list-group-item">item 4</li>
-            <li class="list-group-item">item 5</li>
-            
-        </ul>
-
+    <div style="margin-left:60px; margin-top: 30px" id="app">
+        <div class="conteiner">
+            <input-form></input-form>
+            <br>
+            <my-list></my-list>
+        </div>
     </div>
+
+    <template id="form">
+        <div class="card">
+            <div class="card-block">
+                <div class="form-group">
+                    <label for="">Title</label>
+                    <input 
+                    v-model="titulo"
+                    @keyup.enter="submit()" 
+                    type="text" class="form-control" />
+                </div>
+                <button @click.stop.prevent="submit()"
+                 class="btn btn-primary">Enviar</button>
+            </div>
+        </div>
+    </template>
+
+    <template id="list">
+        <ul class="list-group">
+            <li v-for="item in list" class="list-group-item">{{item.titulo}}</li>
+        </ul>
+    </template>
+
 
     <script src="https://unpkg.com/vue"></script>
     <script>
+
+        Vue.component('input-form', {
+            template:'#form',
+            data(){
+                return{
+                    titulo:'',
+                }
+            },
+            methods:{
+                submit(){
+                    this.$eventHub.$emit('submit',this.titulo);//elemento que emite um evento chamado "submit"
+                    this.titulo = '';
+                }
+            }
+        });
+
+        Vue.component('my-list', {
+            template:'#list',
+            created(){//esse metodo foi ensinado no siclo de vida |
+                this.$eventHub.$on('submit',(titulo)=>{//ele fica escutando quando algumqui emitir um evendo chamado "submit"
+                  if(titulo){
+                      this.list.push({titulo: titulo});
+                  }
+                  else{
+                      console.log('vazio');
+                  }
+                });
+            },
+            data(){
+                return{
+                    list:[{titulo: "eu"}]
+                }
+            }
+        });
+
+        Vue.prototype.$eventHub = new Vue();//uma nova instancia que vai servir como elemento de comunicacao entre dois componentes
 
         var app = new Vue({
             el: "#app",
