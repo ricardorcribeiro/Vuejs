@@ -19,17 +19,39 @@
 <body>
     <div style="margin-left:60px; margin-top: 30px" id="app">
         <div class="conteiner">
+            {{response.status}}
+
             <h1>{{titulo}}</h1>
+            <button @click="getUsers" class="btn btn-success">buscar usuario</button>
+            <div v-if="loader.users">carregando usuarios</div>
+            <ul>
+                <li v-for="user in users">{{user.name}}</li>
+            </ul>
         </div>
     </div>
 
     <script src="https://unpkg.com/vue"></script>
+    <!-- esta biblioteca externa e "vue resource" serve pra requisiçao ajax-->
+    <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.1"></script>
     <script>
 
         var mixin = {
             methods: {
                 getUsers() {
-                    console.log('dlfsdlfkjsdlkjf');
+                    this.loader.users = true;
+                    var url = "http://jsonplaceholder.typicode.com/users"
+                    this.$http.get(url).then(
+                        (reponse) => {//primeiro parametro da promeça e a funcao de sucesso
+                            console.log(reponse.body)
+                            this.users = reponse.body;
+                        },
+                        (error) => {//sugundo parametro da promeça e a funcao de erro
+                            console.log(error)
+                            this.response.status = "error";
+                        }
+                    ).finally(() => {
+                        this.loader.users = false;
+                    });
                 }
             }
         }
@@ -37,7 +59,15 @@
         var app = new Vue({
             el: "#app",
             data: {
+                loader: {
+                    users: false,
+                },
                 titulo: "titulo da minha pagina",
+                users: [],
+                response: {
+                    msg: "erro ao connectar",
+                    status: ""
+                }
             },
             mixins: [mixin],
         });
