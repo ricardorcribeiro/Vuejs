@@ -42,7 +42,7 @@
                     var url = "http://jsonplaceholder.typicode.com/users"
                     this.$http.get(url).then(
                         (reponse) => {//primeiro parametro da promeça e a funcao de sucesso
-                            console.log(reponse.body)
+                            console.log(reponse)
                             this.users = reponse.body;
                         },
                         (error) => {//sugundo parametro da promeça e a funcao de erro

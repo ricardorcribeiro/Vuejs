@@ -1,0 +1,77 @@
+<!--
+
+    mixins serve para reaproveitar as rotinas no sistema
+
+-->
+
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Page Title</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
+</head>
+
+<body>
+    <div style="margin-left:60px; margin-top: 30px" id="app">
+        <div class="conteiner">
+            {{response.status}}
+
+            <h1>{{titulo}}</h1>
+            <button @click="getUsers" class="btn btn-success">buscar usuario</button>
+            <div v-if="loader.users">carregando usuarios</div>
+            <ul>
+                <li v-for="user in users">{{user.name}}</li>
+            </ul>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/vue"></script>
+    <!-- esta biblioteca externa e "axios" serve pra requisiçao ajax-->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+
+        var mixin = {
+            methods: {
+                getUsers() {
+                    this.loader.users = true;
+                    var url = "http://jsonplaceholder.typicode.com/users"
+                    axios.get(url).then(
+                        (reponse) => {//primeiro parametro da promeça e a funcao de sucesso
+                            console.log(reponse)
+                            this.users = reponse.data;
+                        },
+                        (error) => {//sugundo parametro da promeça e a funcao de erro
+                            console.log(error)
+                            this.response.status = "error";
+                        }
+                    ).finally(() => {
+                        this.loader.users = false;
+                    });
+                }
+            }
+        }
+
+        var app = new Vue({
+            el: "#app",
+            data: {
+                loader: {
+                    users: false,
+                },
+                titulo: "titulo da minha pagina",
+                users: [],
+                response: {
+                    msg: "erro ao connectar",
+                    status: ""
+                }
+            },
+            mixins: [mixin],
+        });
+    </script>
+</body>
+
+</html>
