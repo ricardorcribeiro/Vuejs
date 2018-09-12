@@ -1,0 +1,77 @@
+<!--
+
+    
+
+-->
+
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Page Title</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
+</head>
+
+<body>
+    <div style="margin-left:60px; margin-top: 30px" id="app">
+        <div class="conteiner">
+            <h1 ref="title">{{titulo}}</h1>
+            <!-- "ref" serve para guardar a referencia de um elemto html 
+            coloquei nometodo mounted() como exemplo -->
+            <ul ref="users">
+                <!-- caso eu coloque ":key" ao manipular o elemento o veu nao vai fazer varias açoes 
+                    interna e irá direto no elemento
+                traduzindo a açao tera mais performace-->
+                <li v-for="(item, index) in users" :key="item.name">{{item.name}} <a @click="remove(index)">x</a> </li>
+            </ul>
+
+        </div>
+    </div>
+
+    <template id="transformers">
+
+    </template>
+
+    <template id="gameofthones"></template>
+
+    <script src="https://unpkg.com/vue"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.1"></script>
+
+    <script>
+        Vue.component('transformer', {
+            template: '#transformers'
+        });
+
+        Vue.component('got', {
+            template: '#gameofthones'
+        })
+
+        var app = new Vue({
+            el: "#app",
+            mounted(){
+                console.log(this.$refs);
+                console.log(this.$refs.users);
+            },
+            data: {
+                titulo: "titulo da minha pagina",
+                users: [
+                    { name: 'ricardo' },
+                    { name: 'rafaela' },
+                    { name: 'zeus' },
+                    { name: 'gaia' }
+                ]
+            },
+            methods:{
+                remove(index){
+                    this.users.splice(index,1)
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
