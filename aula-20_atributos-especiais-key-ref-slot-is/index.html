@@ -20,6 +20,16 @@
     <div style="margin-left:60px; margin-top: 30px" id="app">
         <div class="conteiner">
             <h1 ref="title">{{titulo}}</h1>
+            <select v-model="movie">
+                <option value="got">got</option>
+                <option value="transformer">transformer</option>
+            </select>
+            <!-- "is" referencia um template de um componete criando uma mecanica -->
+            <component :is="movie"></component>
+            <!-- <transformer>
+                <h1 slot="title"></h1>
+            </transformer>
+            <got></got> -->
             <!-- "ref" serve para guardar a referencia de um elemto html 
             coloquei nometodo mounted() como exemplo -->
             <ul ref="users">
@@ -28,31 +38,54 @@
                 traduzindo a açao tera mais performace-->
                 <li v-for="(item, index) in users" :key="item.name">{{item.name}} <a @click="remove(index)">x</a> </li>
             </ul>
-
+<
         </div>
     </div>
 
     <template id="transformers">
-
+        <div>
+            <slot name="title"></slot>
+            <ul>
+                <li v-for="item in itens">{{item}}</li>
+            </ul>
+        </div>
     </template>
 
-    <template id="gameofthones"></template>
+    <template id="gameofthones">
+        <div>
+            <h1>game of thrones</h1>
+            <ul>
+                <li v-for="item in itens">{{item}}</li>
+            </ul>
+        </div>
+
+    </template>
 
     <script src="https://unpkg.com/vue"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.1"></script>
 
     <script>
         Vue.component('transformer', {
-            template: '#transformers'
+            template: '#transformers',
+            data() {
+                return {
+                    itens: ['banbobi', 'octmus', 'deserptiocons']
+                }
+            }
         });
 
         Vue.component('got', {
-            template: '#gameofthones'
+            template: '#gameofthones',
+            data() {
+                return {
+                    itens: ['jon', 'daneris', 'sarci']
+                }
+            }
         })
 
         var app = new Vue({
             el: "#app",
-            mounted(){
+            mounted() {
                 console.log(this.$refs);
                 console.log(this.$refs.users);
             },
@@ -63,11 +96,12 @@
                     { name: 'rafaela' },
                     { name: 'zeus' },
                     { name: 'gaia' }
-                ]
+                ],
+                movie:'',
             },
-            methods:{
-                remove(index){
-                    this.users.splice(index,1)
+            methods: {
+                remove(index) {
+                    this.users.splice(index, 1)
                 }
             }
         });
