@@ -1,0 +1,131 @@
+<!--
+serve para fazer animaçoes dentro da tag transition
+pode se usar um plugin chamado "VOLOCITY" para fazer animaçoes
+
+
+
+    hucks
+v-enter: Inicia o estado de entrada. Aplicada antes do elemento ser inserido, removida depois de um frame.
+
+v-enter-active: Ativa e termina o estado de entrada. Aplicada antes do elemento ser inserido, removida quando a transição/animação termina.
+
+v-enter-to: Disponível apenas nas versões 2.1.8+. Estado final de entrada. Adicionada um frame após o elemento ser inserido (ao mesmo tempo que v-enter é removida), e removida quando a transição/animação termina.
+
+v-leave: Ativa o estado de saída. Aplicada quando a transição de saída é acionada, removida depois de um frame.
+
+v-leave-active: Estado ativo de saída. Aplicada durante toda a fase de saída. Adicionada imediatamente quando a transição de saída é disparada, removida quando a transição/animação termina. Esta classe pode ser usada para definir a duração, atraso e a curva da transição de saída.
+
+v-leave-to: Disponível apenas nas versões 2.1.8+. Estado final da saída. Adicionada um frame após a transição de saída ser disparada (ao mesmo tempo que v-leave é removida), e removida quando a transição/animação termina.
+-->
+
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Page Title</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
+
+    <style>
+        /* "fadegt" foi o nome que eu defini na tag transition  */
+        .fadegt-enter-active,
+        .fadegt-leave-active {
+            transition: opacity .5s;
+        }
+
+        .fadegt-enter,
+        .fadegt-leave-to {
+            opacity: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div style="margin-left:60px; margin-top: 30px" id="app">
+        <div class="conteiner">
+            <h1 ref="title">{{titulo}}</h1>
+            <select v-model="movie">
+                <option value="got">got</option>
+                <option value="transformer">transformer</option>
+            </select>
+            <!-- "transition" tag para fazer animaçoes "fadegt" nome que foi definido pra colocar para manipular os hucks -->
+            <transition name="fadegt">
+                <component :is="movie"></component>
+            </transition>
+
+            <ul ref="users">
+                <li v-for="(item, index) in users" :key="item.name">{{item.name}} <a style="cursor: pointer;" @click="remove(index)">x</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <template id="transformers">
+        <div>
+            <h1>transformers</h1>
+            <ul>
+                <li v-for="item in itens">{{item}}</li>
+            </ul>
+        </div>
+    </template>
+
+    <template id="gameofthones">
+        <div>
+            <h1>game of thrones</h1>
+            <ul>
+                <li v-for="item in itens">{{item}}</li>
+            </ul>
+        </div>
+
+    </template>
+
+    <script src="https://unpkg.com/vue"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.1"></script>
+
+    <script>
+        Vue.component('transformer', {
+            template: '#transformers',
+            data() {
+                return {
+                    itens: ['banbobi', 'octmus', 'deserptiocons']
+                }
+            }
+        });
+
+        Vue.component('got', {
+            template: '#gameofthones',
+            data() {
+                return {
+                    itens: ['jon', 'daneris', 'sarci']
+                }
+            }
+        })
+
+        var app = new Vue({
+            el: "#app",
+            mounted() {
+                console.log(this.$refs);
+                console.log(this.$refs.users);
+            },
+            data: {
+                titulo: "titulo da minha pagina",
+                users: [
+                    { name: 'ricardo' },
+                    { name: 'rafaela' },
+                    { name: 'zeus' },
+                    { name: 'gaia' }
+                ],
+                movie: '',
+            },
+            methods: {
+                remove(index) {
+                    this.users.splice(index, 1)
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

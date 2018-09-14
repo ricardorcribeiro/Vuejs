@@ -1,7 +1,9 @@
 <!--
 
-    
-
+    "is" uma teg que pode se transformar dinamicamente em outros templates
+"slot" elementodentro do template que pega algum valor definido dentro da tag do componente 
+"ref" guarda a referencia da tag html
+"key" melhor a performace na hora de manipudar um elemento
 -->
 
 
@@ -38,74 +40,70 @@
                 traduzindo a açao tera mais performace-->
                 <li v-for="(item, index) in users" :key="item.name">{{item.name}} <a @click="remove(index)">x</a> </li>
             </ul>
-<
-        </div>
-    </div>
+            < </div> </div> <template id="transformers">
+                <div>
+                    <slot name="title"></slot>
+                    <ul>
+                        <li v-for="item in itens">{{item}}</li>
+                    </ul>
+                </div>
+                </template>
 
-    <template id="transformers">
-        <div>
-            <slot name="title"></slot>
-            <ul>
-                <li v-for="item in itens">{{item}}</li>
-            </ul>
-        </div>
-    </template>
+                <template id="gameofthones">
+                    <div>
+                        <h1>game of thrones</h1>
+                        <ul>
+                            <li v-for="item in itens">{{item}}</li>
+                        </ul>
+                    </div>
 
-    <template id="gameofthones">
-        <div>
-            <h1>game of thrones</h1>
-            <ul>
-                <li v-for="item in itens">{{item}}</li>
-            </ul>
-        </div>
+                </template>
 
-    </template>
+                <script src="https://unpkg.com/vue"></script>
+                <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.1"></script>
 
-    <script src="https://unpkg.com/vue"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.1"></script>
+                <script>
+                    Vue.component('transformer', {
+                        template: '#transformers',
+                        data() {
+                            return {
+                                itens: ['banbobi', 'octmus', 'deserptiocons']
+                            }
+                        }
+                    });
 
-    <script>
-        Vue.component('transformer', {
-            template: '#transformers',
-            data() {
-                return {
-                    itens: ['banbobi', 'octmus', 'deserptiocons']
-                }
-            }
-        });
+                    Vue.component('got', {
+                        template: '#gameofthones',
+                        data() {
+                            return {
+                                itens: ['jon', 'daneris', 'sarci']
+                            }
+                        }
+                    })
 
-        Vue.component('got', {
-            template: '#gameofthones',
-            data() {
-                return {
-                    itens: ['jon', 'daneris', 'sarci']
-                }
-            }
-        })
-
-        var app = new Vue({
-            el: "#app",
-            mounted() {
-                console.log(this.$refs);
-                console.log(this.$refs.users);
-            },
-            data: {
-                titulo: "titulo da minha pagina",
-                users: [
-                    { name: 'ricardo' },
-                    { name: 'rafaela' },
-                    { name: 'zeus' },
-                    { name: 'gaia' }
-                ],
-                movie:'',
-            },
-            methods: {
-                remove(index) {
-                    this.users.splice(index, 1)
-                }
-            }
-        });
-    </script>
+                    var app = new Vue({
+                        el: "#app",
+                        mounted() {
+                            console.log(this.$refs);
+                            console.log(this.$refs.users);
+                        },
+                        data: {
+                            titulo: "titulo da minha pagina",
+                            users: [
+                                { name: 'ricardo' },
+                                { name: 'rafaela' },
+                                { name: 'zeus' },
+                                { name: 'gaia' }
+                            ],
+                            movie: '',
+                        },
+                        methods: {
+                            remove(index) {
+                                this.users.splice(index, 1)
+                            }
+                        }
+                    });
+                </script>
 </body>
 
 </html>
