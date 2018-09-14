@@ -1,0 +1,110 @@
+<!--
+serve para fazer animaçoes dentro da tag transition
+pode se usar um plugin chamado "VOLOCITY" para fazer animaçoes
+
+
+
+    hucks
+v-enter: Inicia o estado de entrada. Aplicada antes do elemento ser inserido, removida depois de um frame.
+
+v-enter-active: Ativa e termina o estado de entrada. Aplicada antes do elemento ser inserido, removida quando a transição/animação termina.
+
+v-enter-to: Disponível apenas nas versões 2.1.8+. Estado final de entrada. Adicionada um frame após o elemento ser inserido (ao mesmo tempo que v-enter é removida), e removida quando a transição/animação termina.
+
+v-leave: Ativa o estado de saída. Aplicada quando a transição de saída é acionada, removida depois de um frame.
+
+v-leave-active: Estado ativo de saída. Aplicada durante toda a fase de saída. Adicionada imediatamente quando a transição de saída é disparada, removida quando a transição/animação termina. Esta classe pode ser usada para definir a duração, atraso e a curva da transição de saída.
+
+v-leave-to: Disponível apenas nas versões 2.1.8+. Estado final da saída. Adicionada um frame após a transição de saída ser disparada (ao mesmo tempo que v-leave é removida), e removida quando a transição/animação termina.
+-->
+
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Page Title</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
+</head>
+
+<body>
+    <div style="margin-left:60px; margin-top: 30px" id="app">
+        <div class="conteiner">
+            <h1 ref="title">{{titulo}}</h1>
+            <!-- "router-link" forma de se criar o link para navegar entre os elementos -->
+            <ul>
+                <li>
+                    <router-link to="/trans">trans</router-link>
+                </li>
+                <li>
+                    <router-link to="/got">got</router-link>
+                </li>
+            </ul>
+            <!-- "router-view" elemento root para os componentes serem renderizador -->
+            <router-view></router-view>
+        </div>
+    </div>
+    <template id="transformers">
+        <div>
+            <h1>transformers</h1>
+            <ul>
+                <li v-for="item in itens">{{item}}</li>
+            </ul>
+        </div>
+    </template>
+
+    <template id="gameofthones">
+        <div>
+            <h1>game of thrones</h1>
+            <ul>
+                <li v-for="item in itens">{{item}}</li>
+            </ul>
+        </div>
+
+    </template>
+
+    <script src="https://unpkg.com/vue"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.1"></script>
+    <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+
+    <script>
+        var transVar = Vue.component('transformer', {
+            template: '#transformers',
+            data() {
+                return {
+                    itens: ['banbobi', 'octmus', 'deserptiocons']
+                }
+            }
+        });
+
+        var gotVar = Vue.component('got', {
+            template: '#gameofthones',
+            data() {
+                return {
+                    itens: ['jon', 'daneris', 'sarci']
+                }
+            }
+        })
+
+        var router = new VueRouter({
+            routes: [
+                { path: '/trans', component: transVar },
+                { path: '/got', component: gotVar }
+            ]
+        })
+
+        var app = new Vue({
+            el: "#app",
+            router,
+            data: {
+                titulo: "titulo da minha pagina",
+                movie: '',
+            },
+        });
+    </script>
+</body>
+
+</html>
