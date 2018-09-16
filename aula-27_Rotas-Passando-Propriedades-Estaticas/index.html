@@ -1,0 +1,188 @@
+<!--
+
+
+-->
+
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Page Title</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
+        <style>
+            .dark{
+                color: white;
+                background-color: black;
+            }
+            .light{
+                color: white;
+                background-color: #ccc;
+            }
+        </style>
+</head>
+
+<body>
+    <div style="margin-left:60px; margin-top: 30px" id="app">
+        <div class="conteiner">
+            <h1 ref="title">{{titulo}}</h1>
+            <!-- "router-link" forma de se criar o link para navegar entre os elementos -->
+            <ul>
+                <li>
+                    <!--estou dando bind(:) no "to" para ele dar bind no objeto montado do VueRouter -->
+                    <router-link :to="{name: 'transName'}">trans</router-link>
+                </li>
+                <li>
+                    <router-link :to="{name: 'gotName'}">got</router-link>
+                </li>
+                <li>
+                    <router-link :to="{name: 'arroyName'}">Arroy</router-link>
+                </li>
+            </ul>
+            <!-- "router-view" elemento root para os componentes serem renderizador -->
+            <router-view></router-view>
+        </div>
+    </div>
+    <template id="transformers">
+        <div>
+            <div class="row">
+
+                <div v-if="sidebar" :class="['col', colorSide ]">
+                    sidebar
+                </div>
+                <div class="col">
+                    <h1>transformers</h1>
+                    <ul>
+                        <li v-for="item in itens">
+                            <!-- 
+                                "name" nome da rota definida
+                                "name detro do params" nome da rota amigavel"(e o que vai aparecer na url)
+                            -->
+                            <router-link :to="{name: 'transformesContent', params:{ name:item.slug, id:item.id }}">{{item.name}}</router-link>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col">
+                    <router-view></router-view>
+                </div>
+
+            </div>
+        </div>
+    </template>
+
+    <template id="gameofthones">
+        <div>
+            <h1>game of thrones</h1>
+            <ul>
+                <li v-for="item in itens">{{item}}</li>
+            </ul>
+        </div>
+
+    </template>
+
+    <template id="transformesContent">
+        <div>
+            <h3>conteudo transformes</h3>
+            <!-- exibe o parametro que foi fapassado para esta rota -->
+            {{ $route.params }}
+        </div>
+    </template>
+
+    <template id="arroy">
+        <div>
+            <h3></h3>
+        </div>
+    </template>
+
+    <template id="error404">
+        <div>
+            <h1>pagina nao encontrada</h1>
+            <p>ops! parece que esta padina nao existe</p>
+        </div>
+    </template>
+
+    <script src="https://unpkg.com/vue"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.1"></script>
+    <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+
+    <script>
+        var transVar = Vue.component('transformer', {
+            template: '#transformers',
+            props: { sidebar: Boolean, colorSide: String },//este parametro esta sendo passado pela rota
+            created() {
+                console.log(this.sidebar)
+            },
+            data() {
+                return {
+                    itens: [
+                        { id: 1, name: 'Optmus Prime', slug: 'optmus-prime' },
+                        { id: 2, name: 'Bumble Bee', slug: 'bumble-bee' },
+                        { id: 3, name: 'Megatron', slug: 'megatron' }
+                    ]
+                }
+            }
+        });
+
+        var gotVar = Vue.component('got', {
+            template: '#gameofthones',
+            data() {
+                return {
+                    itens: ['jon', 'daneris', 'sarci']
+                }
+            }
+        });
+
+
+        var arroyVar = Vue.component('arroy', {
+            template: '#arroy',
+            data() {
+                return {
+                    itens: ['jon', 'daneris', 'sarci']
+                }
+            }
+        });
+
+        var error404 = Vue.component('error404', {
+            template: '#error404'
+        })
+
+        var TransformesContent = Vue.component('transformes-content', {
+            template: '#transformesContent',
+        });
+
+        var router = new VueRouter({
+            routes: [
+                { path: '/', name: 'home', redirect: { name: 'transformesContent', params: { name: 'megatron', id: 3 } } },
+                {
+                    path: '/trans',
+                    component: transVar,
+                    name: "transName",
+                    props: { sidebar: true, colorSide: 'light' },//envia valores para o componente pro sem passar pela url
+                    children: [
+                        { path: ':name', name: 'transformesContent', component: TransformesContent }
+                    ],
+                },
+                { path: '/got', component: gotVar, name: 'gotName' },
+                { path: '/arroy', component: arroyVar, name: 'arroyName' },
+                { path: '*', name: 'erro404', component: error404 }
+            ]
+        })
+
+        var app = new Vue({
+            el: "#app",
+            router,
+            created() {
+
+            },
+            data: {
+                titulo: "titulo da minha pagina",
+                movie: '',
+            },
+        });
+    </script>
+</body>
+
+</html>
