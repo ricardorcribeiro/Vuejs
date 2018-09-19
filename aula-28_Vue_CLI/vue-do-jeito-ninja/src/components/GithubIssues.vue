@@ -7,18 +7,18 @@
          <div class="row">
             <div class="col">
                 <div class="form-group">
-                    <input type="text" class="form-control" placeholder="github username">
+                    <input type="text" class="form-control" v-model="username" placeholder="github username">
                 </div>
             </div>
              <div class="col">
                 <div class="form-group">
-                    <input type="text" class="form-control" placeholder="github repositório">
+                    <input type="text" class="form-control" v-model="repository" placeholder="github repositório">
                 </div>
             </div>
              <div class="col-3">
                 <div class="form-group">
-                    <button class="btn btn-success">GO</button>
-                    <button class="btn btn-danger">LIMPAR</button>
+                    <button @click="getIssues()" class="btn btn-success">GO</button>
+                    <button @click="reset()" class="btn btn-danger">LIMPAR</button>
                 </div>
             </div>
         </div>
@@ -31,9 +31,20 @@
             </tr>
             </thead>
              <tbody>
-            <tr>
-                <td class="text-center" colspan="2">Nenhuma issues encontrada!</td>
-            </tr>
+                <tr style="background:#000;" v-if="loader.getIssues">
+                    <td class="text-center" colspan="2">
+                        <img src="/static/audio.svg"/>
+                    </td>
+                </tr>
+
+                <tr v-if="!!issues.length && !loader.getIssues" v-for="issue in issues" 
+                :key="issue.number">  <!-- se nao colocar o parametro key no loop vai ficar dando erro, serve pra indentificar cada elemento -->
+                    <td>{{issue.number}}</td>
+                    <td>{{issue.title}}</td>
+                </tr>
+                <tr v-if="!!!issues.length && !loader.getIssues"> <!-- os dois primeiros "!!" converte para bool e a terceira "!" serve para negar o resultado -->
+                    <td class="text-center" colspan="2">Nenhuma issues encontrada!</td>
+                </tr>
             </tbody>
         </table>
     </div>
@@ -41,12 +52,40 @@
 
 
 <script>
-    export default{
-        name:'GithubIssues',
-        data(){
-            return{
+import axios from "axios";
 
-            };
-        }
+export default {
+  name: "GithubIssues",
+  methods: {
+    reset() {
+      this.username = "";
+      this.repository = "";
+    },
+    getIssues() {
+      if (this.username == "" || this.repository == "") {
+        alert("preencha usuario e repositorio");
+        return;
+      }
+
+      this.loader.getIssues = true;
+      const url = "https://jsonplaceholder.typicode.com/users";
+      const urlCurso = `https://api.github.com/repos/${this.username}/${
+        this.repository
+      }/issues`;
+      axios.get(urlCurso).then(result => {
+        this.issues = result.data;
+      }).finally(()=> this.loader.getIssues = false);
     }
+  },
+  data() {
+    return {
+      username: "vuejs",
+      repository: "vue",
+      issues: [],
+      loader: {
+        getIssues: false
+      }
+    };
+  }
+};
 </script>
