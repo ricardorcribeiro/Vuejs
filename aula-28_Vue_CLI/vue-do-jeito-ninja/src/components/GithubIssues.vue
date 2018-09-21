@@ -23,7 +23,14 @@
             </div>
         </div>
          <br><hr><br>
-         <table class="table table-sm table-bordered">
+
+        <template v-if="selectedIssue.id">
+            <h2>{{selectedIssue.title}}</h2>
+            <p>{{selectedIssue.body}}</p>
+            <button @click="clearIssue()" class="btn  btn-success">voltar</button>
+        </template>
+
+         <table v-show="!selectedIssue.id" class="table table-sm table-bordered">
             <thead>
             <tr>
                 <th width="100">Número</th>
@@ -31,17 +38,20 @@
             </tr>
             </thead>
              <tbody>
-                <tr style="background:#000;" v-if="loader.getIssues">
+                <tr style="background:#000;" v-if="loader.getIssues || loader.getIssue">
                     <td class="text-center" colspan="2">
                         <img src="/static/audio.svg"/>
                     </td>
                 </tr>
 
-                <tr v-if="!!issues.length && !loader.getIssues" v-for="issue in issues" 
-                :key="issue.number">  <!-- se nao colocar o parametro key no loop vai ficar dando erro, serve pra indentificar cada elemento -->
-                    <td>{{issue.number}}</td>
-                    <td>{{issue.title}}</td>
-                </tr>
+                <template v-if="!loader.getIssue">
+                    <tr v-if="!!issues.length && !loader.getIssues" 
+                    v-for="issue in issues" 
+                    :key="issue.number">  <!-- se nao colocar o parametro key no loop vai ficar dando erro, serve pra indentificar cada elemento -->
+                        <td><a @click.prevent.stop="getIssue(issue.number)">{{issue.number}}</a></td>
+                        <td>{{issue.title}}</td>
+                    </tr>
+                </template>
                 <tr v-if="!!!issues.length && !loader.getIssues"> <!-- os dois primeiros "!!" converte para bool e a terceira "!" serve para negar o resultado -->
                     <td class="text-center" colspan="2">Nenhuma issues encontrada!</td>
                 </tr>
@@ -75,6 +85,23 @@ export default {
       axios.get(urlCurso).then(result => {
         this.issues = result.data;
       }).finally(()=> this.loader.getIssues = false);
+    },
+    getIssue(issueId) {
+      if (this.username == "" || this.repository == "") {
+        alert("preencha usuario e repositorio");
+        return;
+      }
+      this.loader.getIssue = true;
+      const urlCurso = `https://api.github.com/repos/${this.username}/${
+        this.repository
+      }/issues/${issueId}`;
+      axios.get(urlCurso).then(response => {
+          console.log(response.data);
+        this.selectedIssue = response.data;
+      }).finally(()=> this.loader.getIssue = false);
+    },
+    clearIssue(){
+        this.selectedIssue ={};
     }
   },
   data() {
@@ -82,8 +109,10 @@ export default {
       username: "vuejs",
       repository: "vue",
       issues: [],
+      selectedIssue:{},
       loader: {
-        getIssues: false
+        getIssues: false,
+        getIssue: false
       }
     };
   }
